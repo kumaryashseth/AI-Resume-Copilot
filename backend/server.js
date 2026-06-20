@@ -17,7 +17,7 @@ app.use(express.json());
 app.get("/",(req,res)=>{
     res.json({
         success:true,
-        message:"AI Resume Builder API Running"
+        message:"AI Resume Copilot API Running"
     })
 })
 
