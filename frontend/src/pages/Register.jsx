@@ -1,103 +1,88 @@
-import {
-  useState,
-} from "react";
+import { useState } from "react";
+import { TextField, Button, Paper, Typography } from "@mui/material";
 
-import {
-  useNavigate
-} from "react-router-dom";
-
-import {
-  registerUser,
-} from "../services/authService";
+import { Link } from "react-router-dom";
+import { registerUser } from "../services/authService";
 
 const Register = () => {
-
-  const navigate = useNavigate();
-  const [redirect, setRedirect] = useState(false);
-
-  const [formData, setFormData] =
-    useState({
-      name: "",
-      email: "",
-      password: "",
-    });
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    password: "",
+  });
 
   const handleChange = (e) => {
-
     setFormData({
       ...formData,
-      [e.target.name]:
-        e.target.value,
+      [e.target.name]: e.target.value,
     });
   };
 
-  const handleSubmit =
-    async (e) => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-      e.preventDefault();
+    console.log(formData);
 
-      try {
+    try {
 
-        const data =
-          await registerUser(
-            formData
-          );
+      const data=await registerUser(formData);
+      console.log(data);
 
-        alert(data.message);
-        navigate("/login")
-      } catch (error) {
-
-        alert(
-          error.response.data.message
-        );
-
-      }
-    };
+      alert(data.message);
+    } catch (error) {
+      console.error(error);
+      
+      alert(error.response.data.message);
+    }
+    
+  };
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen gap-6">
-
-      <form
-        onSubmit={handleSubmit}
-        className="shadow-lg p-6 rounded w-96"
-      >
-
-        <h2 className="text-2xl mb-4">
+    <div className="min-h-screen flex justify-center items-center bg-gray-100">
+      <Paper elevation={3} className="w-full max-w-md p-6">
+        <Typography variant="h4" className="text-center mb-6">
           Register
-        </h2>
+        </Typography>
 
-        <input
-          type="text"
-          name="name"
-          placeholder="Name"
-          onChange={handleChange}
-          className="border p-2 w-full mb-3 rounded"
-        />
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+          <TextField
+            label="Full Name"
+            name="name"
+            fullWidth
+            value={formData.name}
+            onChange={handleChange}
+          />
 
-        <input
-          type="email"
-          name="email"
-          placeholder="Email"
-          onChange={handleChange}
-          className="border p-2 w-full mb-3 rounded"
-        />
+          <TextField
+            label="Email"
+            name="email"
+            type="email"
+            fullWidth
+            value={formData.email}
+            onChange={handleChange}
+          />
 
-        <input
-          type="password"
-          name="password"
-          placeholder="Password"
-          onChange={handleChange}
-          className="border p-2 w-full mb-3 rounded"
-        />
+          <TextField
+            label="Password"
+            name="password"
+            type="password"
+            fullWidth
+            value={formData.password}
+            onChange={handleChange}
+          />
 
-        <button
-          className="bg-black text-white w-full p-2 rounded"
-        >
-          Register
-        </button>
+          <Button type="submit" variant="contained" size="large">
+            Register
+          </Button>
 
-      </form>
-
+          <Typography variant="body2" className="text-center">
+            Already have an account?{" "}
+            <Link to="/login" className="text-blue-600">
+              Login
+            </Link>
+          </Typography>
+        </form>
+      </Paper>
     </div>
   );
 };
