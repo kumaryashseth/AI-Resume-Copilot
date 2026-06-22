@@ -1,4 +1,4 @@
-import {  Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 
 import Home from "../pages/Home";
 
@@ -10,23 +10,37 @@ import ProtectedRoute from "./ProtectedRoute";
 
 import Dashboard from "../pages/Dashboard";
 import CreateResume from "../pages/CreateResume";
-
+import MyResumes from "../pages/MyResume";
 
 const AppRoutes = () => {
   return (
     <>
-     
-      
-        <Routes>
-          <Route path="/" element={<Home />} />
+      <Routes>
+        <Route path="/" element={<Home />} />
 
-          <Route path="/login" element={<Login />} />
+        <Route path="/login" element={<Login />} />
 
-          <Route path="/register" element={<Register />} />
-          <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
-          <Route path="/create-resume" element={<ProtectedRoute><CreateResume /></ProtectedRoute>} />
-        </Routes>
-      
+        <Route path="/register" element={<Register />} />
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/create-resume"
+          element={
+            <ProtectedRoute>
+              <CreateResume />
+            </ProtectedRoute>
+          }
+        />
+        <Route path="/create-resume" element={<CreateResume />} />
+
+        <Route path="/my-resumes" element={<MyResumes />} />
+      </Routes>
     </>
   );
 };
