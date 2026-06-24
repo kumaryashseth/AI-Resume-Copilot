@@ -11,6 +11,10 @@ import ProtectedRoute from "./ProtectedRoute";
 import Dashboard from "../pages/Dashboard";
 import CreateResume from "../pages/CreateResume";
 import MyResumes from "../pages/MyResume";
+import UploadResume from "../pages/UploadResume";
+import AnalysisDashboard from "../pages/AnalysisDashboard";
+import JDMatcher from "../pages/JDMatcher";
+import ResumeRewriter from "../pages/ResumeRewriter";
 
 const AppRoutes = () => {
   return (
@@ -40,6 +44,11 @@ const AppRoutes = () => {
         <Route path="/create-resume" element={<CreateResume />} />
 
         <Route path="/my-resumes" element={<MyResumes />} />
+        <Route path="/upload-resume" element={<UploadResume />} />
+        <Route path="/analysis" element={<AnalysisDashboard />} />
+        <Route path="/jd-matcher" element={<JDMatcher />} />
+        <Route path="/resume-rewriter" element={<ResumeRewriter />} />
+          
       </Routes>
     </>
   );

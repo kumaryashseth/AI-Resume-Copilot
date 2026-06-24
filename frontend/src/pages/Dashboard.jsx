@@ -1,151 +1,81 @@
 import React from "react";
-import { useAuth } from "../context/AuthContext";
+import { Box, Card, CardContent, Grid, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 
-import {
-  Container,
-  Typography,
-  Card,
-  CardContent,
-  Grid,
-  Button,
-  Box,
-} from "@mui/material";
+import { useAuth } from "../context/AuthContext";
 
 import DescriptionIcon from "@mui/icons-material/Description";
-import AddCircleIcon from "@mui/icons-material/AddCircle";
+import FolderIcon from "@mui/icons-material/Folder";
 import UploadFileIcon from "@mui/icons-material/UploadFile";
 import AnalyticsIcon from "@mui/icons-material/Analytics";
+import WorkIcon from "@mui/icons-material/Work";
+import AutoFixHighIcon from "@mui/icons-material/AutoFixHigh";
 
 const Dashboard = () => {
   const { user } = useAuth();
 
-  const cards = [
+  const dashboardCards = [
     {
       title: "Create Resume",
-      description: "Build a professional ATS-friendly resume.",
-      icon: <AddCircleIcon fontSize="large" />,
-      link: "/create-resume",
+      icon: <DescriptionIcon fontSize="large" />,
+      path: "/create-resume",
     },
     {
       title: "My Resumes",
-      description: "View and manage all saved resumes.",
-      icon: <DescriptionIcon fontSize="large" />,
-      link: "/my-resumes",
+      icon: <FolderIcon fontSize="large" />,
+      path: "/my-resumes",
     },
     {
       title: "Upload Resume",
-      description: "Upload an existing resume for analysis.",
       icon: <UploadFileIcon fontSize="large" />,
-      link: "/upload-resume",
+      path: "/upload-resume",
+    },
+    {
+      title: "JD Matcher",
+      icon: <WorkIcon fontSize="large" />,
+      path: "/jd-matcher",
     },
     {
       title: "ATS Analysis",
-      description: "Check ATS score and improvement suggestions.",
       icon: <AnalyticsIcon fontSize="large" />,
-      link: "/ats-analysis",
+      path: "/analysis",
+    },
+    {
+      title: "Resume Rewriter",
+      icon: <AutoFixHighIcon fontSize="large" />,
+      path: "/resume-rewriter",
     },
   ];
 
   return (
-    <Container maxWidth="xl" className="py-10">
-      {/* Header */}
-      <Box className="mb-8">
-        <Typography variant="h4" fontWeight="bold">
-          Welcome, {user?.name || "User"} 👋
-        </Typography>
+    <Box className="p-8">
+      <Typography variant="h4" gutterBottom className="font-bold">
+        Welcome {user?.name} 😉
+      </Typography>
 
-        <Typography variant="body1" color="text.secondary" className="mt-2">
-          Manage resumes, analyze ATS scores and improve your career profile.
-        </Typography>
-      </Box>
+      <Typography variant="body1" className="text-gray-600 mb-8">
+        Manage and optimize your career using AI Tools
+      </Typography>
 
-      {/* Stats Cards */}
-      <Grid container spacing={3} className="mb-8">
-        <Grid item xs={12} sm={6} md={3}>
-          <Card elevation={3}>
-            <CardContent>
-              <Typography variant="h6">Total Resumes</Typography>
-
-              <Typography variant="h3" fontWeight="bold">
-                0
-              </Typography>
-            </CardContent>
-          </Card>
-        </Grid>
-
-        <Grid item xs={12} sm={6} md={3}>
-          <Card elevation={3}>
-            <CardContent>
-              <Typography variant="h6">ATS Reports</Typography>
-
-              <Typography variant="h3" fontWeight="bold">
-                0
-              </Typography>
-            </CardContent>
-          </Card>
-        </Grid>
-
-        <Grid item xs={12} sm={6} md={3}>
-          <Card elevation={3}>
-            <CardContent>
-              <Typography variant="h6">Uploaded Files</Typography>
-
-              <Typography variant="h3" fontWeight="bold">
-                0
-              </Typography>
-            </CardContent>
-          </Card>
-        </Grid>
-
-        <Grid item xs={12} sm={6} md={3}>
-          <Card elevation={3}>
-            <CardContent>
-              <Typography variant="h6">Profile Score</Typography>
-
-              <Typography variant="h3" fontWeight="bold">
-                85%
-              </Typography>
-            </CardContent>
-          </Card>
-        </Grid>
-      </Grid>
-
-      {/* Action Cards */}
       <Grid container spacing={3}>
-        {cards.map((card, index) => (
-          <Grid item xs={12} md={6} key={index}>
-            <Card
-              elevation={4}
-              className="hover:shadow-xl transition-all duration-300"
-            >
-              <CardContent>
-                <div className="flex items-center gap-4 mb-4">
-                  {card.icon}
-
-                  <Typography variant="h5" fontWeight="bold">
-                    {card.title}
-                  </Typography>
-                </div>
-
-                <Typography color="text.secondary" className="mb-4">
-                  {card.description}
-                </Typography>
-
-                <Button
-                  component={Link}
-                  to={card.link}
-                  variant="contained"
-                  fullWidth
-                >
-                  Open
-                </Button>
-              </CardContent>
-            </Card>
+        {dashboardCards.map((card, index) => (
+          <Grid key={index} item xs={12} sm={6} md={4}>
+            <Link to={card.path} className="no_underline">
+              <Card className="hover:shadow-2xl transition-all duration-300 cursor-pointer h-full">
+                <CardContent>
+                  <div className="flex flex-col items-center justify-center h-full">
+                    {card.icon}
+                    <Typography variant="h6" className="text-gray-800 mt-4">
+                      {card.title}
+                    </Typography>
+                  </div>
+                </CardContent>
+              </Card>
+            </Link>
           </Grid>
         ))}
       </Grid>
-    </Container>
+    </Box>
   );
 };
 
