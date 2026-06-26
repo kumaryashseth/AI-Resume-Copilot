@@ -16,10 +16,11 @@ import EducationSection from "../components/EducationSection";
 import ExperienceSection from "../components/ExperienceSection";
 import ProjectSection from "../components/ProjectSection";
 import ResumePreview from "../components/ResumePreview";
+import TemplateSelector from "../components/TemplateSelector";
 
 const CreateResume = () => {
   const [loading, setLoading] = useState(false);
-
+  const [selectedTemplate, setSelectedTemplate] = useState("modern");
   const [resumeData, setResumeData] = useState({
     _id: "",
 
@@ -148,8 +149,12 @@ const CreateResume = () => {
 
         <br />
         <br />
+        <TemplateSelector
+          template={selectedTemplate}
+          setTemplate={setSelectedTemplate}
+        />
 
-        <ResumePreview resumeData={resumeData} />
+        <ResumePreview resume={resumeData} template={selectedTemplate} />
       </Paper>
     </Container>
   );

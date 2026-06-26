@@ -176,6 +176,58 @@ export const generateSummary= async(resume)=>{
   }
 }
 
+export const generateCoverLetter = async (
+  resume,
+  company,
+  position
+) => {
+
+  const prompt = `
+You are an expert HR recruiter.
+
+Generate a professional ATS-friendly cover letter.
+
+Rules:
+
+1. One page only.
+
+2. Professional tone.
+
+3. Mention skills.
+
+4. Mention projects.
+
+5. Mention company name.
+
+6. Mention position.
+
+Return ONLY JSON.
+
+{
+ "coverLetter":""
+}
+
+Resume:
+
+${JSON.stringify(resume)}
+
+Company:
+
+${company}
+
+Position:
+
+${position}
+`;
+
+  const response =
+    await ai.models.generateContent({
+      model: "gemini-3.1-flash-lite",
+      contents: prompt,
+    });
+
+  return response.text;
+};
 
 
 export default analyzeResume;

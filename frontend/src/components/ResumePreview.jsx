@@ -1,85 +1,29 @@
-import { Paper } from "@mui/material";
+import ModernTemplate from "../templates/ModernTemplate";
+import ATSClassicTemplate from "../templates/ATSClassicTemplate";
+import MinimalTemplate from "../templates/MinimalTemplate";
+import DeveloperTemplate from "../templates/DeveloperTemplate";
+import PDFDownloadButton from "./PDFDownloadButton";
 
-const ResumePreview = ({
-  resumeData,
-}) => {
+const ResumePreview = ({ resume, template }) => {
+  const templates = {
+    modern: ModernTemplate,
+    ats: ATSClassicTemplate,
+    minimal: MinimalTemplate,
+    developer: DeveloperTemplate,
+  };
+
+  const SelectedTemplate = templates[template] || ModernTemplate;
 
   return (
-
-    <Paper
-      elevation={3}
-      className="p-6 min-h-screen"
+    <div
+      id="resume-preview"
+      className="bg-white shadow-xl rounded-lg overflow-hidden min-h-[1123px]"
     >
-
-      <h1 className="text-3xl font-bold">
-
-        {
-          resumeData.personalInfo
-            .fullName
-        }
-
-      </h1>
-
-      <p>
-        {
-          resumeData.personalInfo
-            .email
-        }
-      </p>
-
-      <hr className="my-4" />
-
-      <h2 className="font-bold text-xl">
-        Skills
-      </h2>
-
-      <ul>
-
-        {
-          resumeData.skills.map(
-            (
-              skill,
-              index
-            ) => (
-              <li key={index}>
-                • {skill}
-              </li>
-            )
-          )
-        }
-
-      </ul>
-
-      <h2
-        className="
-        font-bold
-        text-xl
-        mt-6"
-      >
-        Education
-      </h2>
-
-      {
-        resumeData.education.map(
-          (edu, index) => (
-
-            <div key={index}>
-
-              <p>
-                {edu.degree}
-              </p>
-
-              <p>
-                {edu.college}
-              </p>
-
-            </div>
-          )
-        )
-      }
-
-    </Paper>
-
+      <div className="flex flex-col gap-4">
+        <PDFDownloadButton />
+        <SelectedTemplate resume={resume} />
+      </div>
+    </div>
   );
 };
 

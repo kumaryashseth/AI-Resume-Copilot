@@ -10,7 +10,7 @@ import authRoutes from "./routes/authRoutes.js";
 import resumeRoutes from "./routes/resumeRoutes.js";
 import uploadRoutes from "./routes/uploadRoutes.js";
 import analysisRoutes from "./routes/analysisRoutes.js";
-
+import coverLetterRoutes from "./routes/coverLetterRoutes.js";
 
 connectDB();
 
@@ -32,6 +32,7 @@ app.use("/api/resume", resumeRoutes);
 app.use("/api/upload", uploadRoutes);
 app.use("/uploads", express.static("uploads"));
 app.use("/api/analyze", analysisRoutes);
+app.use("/api/cover-letter", coverLetterRoutes);
 
 const PORT = process.env.PORT || 5000;
 
