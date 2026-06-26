@@ -8,19 +8,20 @@ const uploadResume = async (req, res) => {
 
     const pdfData = await pdfParse(dataBuffer);
 
-    await UploadedResume.create({
+    const uploadedResume = await UploadedResume.create({
       user: req.user.id,
       fileName: req.file.filename,
       originalName: req.file.originalname,
       extractedText: pdfData.text,
     });
 
-
-    res.json({
+    res.status(201).json({
       success: true,
-      fileName: req.file.filename,
-      text: pdfData.text,
+      uploadedResumeId: uploadedResume._id,
+      fileName: uploadedResume.fileName,
+      originalName: uploadedResume.originalName,
       pages: pdfData.numpages,
+      text: pdfData.text,
     });
   } catch (error) {
     console.error(error);

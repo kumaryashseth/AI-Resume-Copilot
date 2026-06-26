@@ -59,8 +59,8 @@ export const healthCheck = async (req, res) => {
   }
 };
 
-export const matchResumeWithJD= async (resumeText, jobDescription)=>{
-  const prompt= `
+export const matchResumeWithJD = async (resumeText, jobDescription) => {
+  const prompt = `
     You are an expert  ATS Resume Matcher.
 
     Analyze the resume and job description and provide a match score.
@@ -85,7 +85,7 @@ export const matchResumeWithJD= async (resumeText, jobDescription)=>{
     Resume: ${resumeText}
     Job Description: ${jobDescription}
   `;
-  
+
   try {
     const response = await ai.models.generateContent({
       model: "gemini-3.1-flash-lite",
@@ -94,16 +94,14 @@ export const matchResumeWithJD= async (resumeText, jobDescription)=>{
     console.log(response.text);
 
     return response.text;
-    
   } catch (error) {
     console.error("Error matching resume with job description:", error);
     throw error;
   }
-}
+};
 
-export const rewriteBulletPoints=async(bulletPoint)=>{
-
-  const prompt=`
+export const rewriteBulletPoints = async (bulletPoint) => {
+  const prompt = `
   You are an expert writer.
   Rewrite the following resume bullet point.
 
@@ -120,7 +118,7 @@ export const rewriteBulletPoints=async(bulletPoint)=>{
 
   Bullet Point: ${bulletPoint}
   `;
-  
+
   try {
     const response = await ai.models.generateContent({
       model: "gemini-3.1-flash-lite",
@@ -133,12 +131,10 @@ export const rewriteBulletPoints=async(bulletPoint)=>{
     console.error("Error rewriting bullet points:", error);
     throw error;
   }
-} 
+};
 
-
-export const generateSummary= async(resume)=>{
-
-  const prompt=`
+export const generateSummary = async (resume) => {
+  const prompt = `
   You are an expert ATS resume writer.
   Create a professional  summary for this candidate.
 
@@ -160,9 +156,9 @@ export const generateSummary= async(resume)=>{
 
   Resume:
   ${JSON.stringify(resume)}
-  `
+  `;
 
- try {
+  try {
     const response = await ai.models.generateContent({
       model: "gemini-3.1-flash-lite",
       contents: prompt,
@@ -174,14 +170,9 @@ export const generateSummary= async(resume)=>{
     console.error("Error generating summary:", error);
     throw error;
   }
-}
+};
 
-export const generateCoverLetter = async (
-  resume,
-  company,
-  position
-) => {
-
+export const generateCoverLetter = async (resume, company, position) => {
   const prompt = `
 You are an expert HR recruiter.
 
@@ -220,14 +211,102 @@ Position:
 ${position}
 `;
 
-  const response =
-    await ai.models.generateContent({
-      model: "gemini-3.1-flash-lite",
-      contents: prompt,
-    });
+  const response = await ai.models.generateContent({
+    model: "gemini-3.1-flash-lite",
+    contents: prompt,
+  });
 
   return response.text;
 };
 
+export const generateInterviewQuestions = async (resume,position,difficulty) => {
+  const prompt = `
+
+You are an expert technical interviewer.
+
+Generate 10 interview questions.
+
+Role:
+
+${position}
+
+Difficulty:
+
+${difficulty}
+
+Resume:
+
+${JSON.stringify(resume)}
+
+Rules
+
+1. Mix technical and HR questions.
+
+2. Mention user's projects.
+
+3. Mention skills.
+
+4. Return ONLY in valid JSON format
+
+Return in valid JSON format
+
+{
+
+"questions":[{},{},{}]
+
+`;
+
+  const response = await ai.models.generateContent({
+    model: "gemini-3.1-flash-lite",
+
+    contents: prompt,
+  });
+
+  return response.text;
+};
+
+export const analyzeCareer = async (resume, goal) => {
+  const prompt = `
+
+You are an AI Career Mentor.
+
+Analyze the resume.
+
+Career Goal:
+
+${goal}
+
+Resume:
+
+${JSON.stringify(resume)}
+
+Return ONLY JSON.
+
+{
+ "currentSkills":[],
+ "missingSkills":[],
+ "roadmap":[
+   {
+     "week":1,
+     "topic":"Docker"
+   }
+ ],
+ "portfolio":{
+    "headline":"",
+    "about":"",
+    "projects":[]
+ }
+}
+
+`;
+
+  const response = await ai.models.generateContent({
+    model: "gemini-3.1-flash-lite",
+
+    contents: prompt,
+  });
+
+  return response.text;
+};
 
 export default analyzeResume;

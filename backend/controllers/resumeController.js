@@ -38,7 +38,10 @@ const getMyResumes = async (req, res) => {
 
 const getResumeById = async (req, res) => {
   try {
-    const resume = await Resume.findOne({ _id: req.params.id, user: req.user.id });
+    const resume = await Resume.findOne({
+      _id: req.params.id,
+      user: req.user.id,
+    });
 
     if (!resume) {
       return res

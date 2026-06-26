@@ -10,6 +10,8 @@ const uploadedResumeSchema = new mongoose.Schema({
   fileName: String,
   originalName : String,
   extractedText: String,
+},{
+  timestamps:true,
 });
 
 export default mongoose.model("UploadedResume", uploadedResumeSchema);
