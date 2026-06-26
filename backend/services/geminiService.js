@@ -142,7 +142,13 @@ export const generateSummary= async(resume)=>{
   You are an expert ATS resume writer.
   Create a professional  summary for this candidate.
 
-
+  Rules:
+  - 60-80 words
+  - ATS friendly
+  - Professional
+  - Mention strongest technical skills
+  - Mention projects if relevant
+  - Mention career objective
 
   Return ONLY valid JSON.
 
@@ -152,11 +158,8 @@ export const generateSummary= async(resume)=>{
 
   Candidate Data:
 
-  Name: ${resume.personalInfo.name}
-  Experience: ${JSON.stringify(resume.experience)}
-  Skills: ${JSON.stringify(resume.skills)}
-  Education: ${JSON.stringify(resume.education)}
-  Projects: ${JSON.stringify(resume.projects)}
+  Resume:
+  ${JSON.stringify(resume)}
   `
 
  try {

@@ -121,15 +121,17 @@ export const generateResumeSummary= async(req,res)=>{
    }
    
    const result = await generateSummary(resume);
-   const summary = result.summary;
-
-   resume.summary=JSON.parse(summary);
-
-   console.log("Summary:", resume.summary);
+   const parsed=JSON.parse(result);
+   
+   resume.summary=parsed.summary;
+   
 
    await resume.save();
 
-   res.json(resume);
+   res.json({
+    success:true,
+    summary: parsed.summary
+   });
     
   } catch (error) {
     console.error("Error:", error);

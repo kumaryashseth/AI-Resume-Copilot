@@ -28,3 +28,8 @@ export const analyzeJD=(data)=>{
 export const rewritePoint=(data)=>{
     return API.post("/api/analyze/rewrite",data,authHeader())
 }
+
+export const generateSummary =(resumeId)=>{
+    const token=localStorage.getItem("token");
+    return API.post('/api/analyze/summary',resumeId,authHeader())
+}
