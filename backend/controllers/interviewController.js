@@ -1,59 +1,46 @@
-import Resume from "../models/Resume.js";
+import UploadedResume from "../models/UploadedResume.js";
+import cleanJson from "../utils/cleanJson.js";
+import { generateMockInterview } from "../services/geminiService.js";
 
-import Interview from "../models/ineterview.js";
-
-import { generateInterviewQuestions } from "../services/geminiService.js";
-
-export const createInterview = async (req, res) => {
+export const createMockInterview = async (req, res) => {
   try {
-    const { resumeId, position, difficulty, company } = req.body;
+    const { resumeId } = req.body;
 
-    const resume = await Resume.findById(resumeId);
+    if (!resumeId) {
+      return res.status(400).json({
+        success: false,
+        message: "Resume ID is required",
+      });
+    }
+
+    const resume = await UploadedResume.findById(resumeId);
 
     if (!resume) {
       return res.status(404).json({
+        success: false,
         message: "Resume not found",
       });
     }
 
-    const result = await generateInterviewQuestions(
-      resume,
-      position,
-      difficulty,
+    const aiResponse = await generateMockInterview(
+      resume.extractedText
     );
 
-    const parsed = JSON.parse(result);
+    const parsed = JSON.parse(cleanJson(aiResponse));
 
-    const questions = parsed.questions.map((q) => ({
-      question: q,
-    }));
-
-    const interview = await Interview.create({
-      user: req.user.id,
-
-      resume: resume._id,
-
-      company,
-
-      position,
-
-      difficulty,
-
-      questions,
-    });
-
-    res.status(201).json({
+    return res.json({
       success: true,
-
-      interview,
+      ...parsed,
     });
   } catch (error) {
-    res.status(500).json({
+    console.error("Mock Interview Error:", error);
+
+    return res.status(500).json({
+      success: false,
       message: error.message,
     });
   }
 };
-
 
 
 

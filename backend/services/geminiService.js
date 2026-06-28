@@ -172,93 +172,111 @@ export const generateSummary = async (resume) => {
   }
 };
 
-export const generateCoverLetter = async (resume, company, position) => {
+export const generateCoverLetter = async (data) => {
   const prompt = `
+
 You are an expert HR recruiter.
 
-Generate a professional ATS-friendly cover letter.
+Write a professional ATS-friendly Cover Letter.
+
+Candidate Information:
+
+Name:
+${data.name}
+
+Job Title:
+${data.jobTitle}
+
+Company:
+${data.company}
+
+Skills:
+${data.skills}
+
+Experience:
+${data.experience}
+
+Projects:
+${data.projects}
+
+Job Description:
+${data.jobDescription}
 
 Rules:
 
-1. One page only.
+1. Professional tone
 
-2. Professional tone.
+2. Around 300 words
 
-3. Mention skills.
+3. ATS Friendly
 
-4. Mention projects.
+4. No Markdown
 
-5. Mention company name.
-
-6. Mention position.
-
-Return ONLY JSON.
+5. Return ONLY valid JSON
 
 {
- "coverLetter":""
+"coverLetter":""
 }
 
-Resume:
-
-${JSON.stringify(resume)}
-
-Company:
-
-${company}
-
-Position:
-
-${position}
 `;
 
   const response = await ai.models.generateContent({
     model: "gemini-3.1-flash-lite",
+
     contents: prompt,
   });
 
   return response.text;
 };
 
-export const generateInterviewQuestions = async (resume,position,difficulty) => {
+export const generateMockInterview = async (resumeText) => {
   const prompt = `
+You are a Senior Software Engineering Interviewer.
 
-You are an expert technical interviewer.
-
-Generate 10 interview questions.
-
-Role:
-
-${position}
-
-Difficulty:
-
-${difficulty}
+Generate interview questions based on this resume.
 
 Resume:
+${resumeText}
 
-${JSON.stringify(resume)}
-
-Rules
-
-1. Mix technical and HR questions.
-
-2. Mention user's projects.
-
-3. Mention skills.
-
-4. Return ONLY in valid JSON format
-
-Return in valid JSON format
+Return ONLY valid JSON.
 
 {
+  "technical":[
+    {
+      "question":"",
+      "difficulty":"",
+      "tip":""
+    }
+  ],
 
-"questions":[{},{},{}]
+  "hr":[
+    {
+      "question":"",
+      "difficulty":"",
+      "tip":""
+    }
+  ],
 
+  "behavioral":[
+    {
+      "question":"",
+      "difficulty":"",
+      "tip":""
+    }
+  ]
+}
+
+Rules:
+
+- 5 Technical Questions
+- 3 HR Questions
+- 2 Behavioral Questions
+- Difficulty should be Easy, Medium or Hard
+- Tips should help answer the question
 `;
 
   const response = await ai.models.generateContent({
     model: "gemini-3.1-flash-lite",
-
     contents: prompt,
   });
 

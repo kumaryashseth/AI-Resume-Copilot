@@ -35,7 +35,8 @@ app.use("/api/upload", uploadRoutes);
 app.use("/uploads", express.static("uploads"));
 app.use("/api/analyze", analysisRoutes);
 app.use("/api/cover-letter", coverLetterRoutes);
-app.use("/api/interview", interviewRoutes);
+
+app.use("/api/mock-interview", interviewRoutes);
 app.use("/api/career", careerRoutes)
 
 const PORT = process.env.PORT || 5000;

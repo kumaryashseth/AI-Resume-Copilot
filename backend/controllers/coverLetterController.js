@@ -1,45 +1,53 @@
-import Resume from "../models/Resume.js";
-import Coverletter from "../models/Coverletter.js";
+import cleanJson from "../utils/cleanJson.js";
 import { generateCoverLetter } from "../services/geminiService.js";
 
 export const createCoverLetter = async (req, res) => {
   try {
-    const { resumeId, company, position } = req.body;
+    const {
+      name,
+      jobTitle,
+      company,
+      skills,
+      experience,
+      projects,
+      jobDescription,
+    } = req.body;
 
-    const resume = await Resume.findById(resumeId);
-
-    if (!resume) {
-      return res.status(404).json({
-        message: "Resume not found",
+   
+    if (!name || !jobTitle || !company || !skills || !experience || !projects) {
+      return res.status(400).json({
+        success: false,
+        message: "Please fill all required fields.",
       });
     }
 
-    const aiResponse = await generateCoverLetter(resume, company, position);
-
-    const parsed = JSON.parse(aiResponse);
-
-    const letter = await Coverletter.create({
-      user: req.user.id,
-
-      resume: resume._id,
-
+    const aiResponse = await generateCoverLetter({
+      name,
+      jobTitle,
       company,
-
-      position,
-
-      content: parsed.coverLetter,
+      skills,
+      experience,
+      projects,
+      jobDescription,
     });
 
-    res.status(201).json({
-      success: true,
+    console.log("===== RAW GEMINI RESPONSE =====");
+    console.log(aiResponse);
 
-      letter,
+    
+    const parsed = JSON.parse(cleanJson(aiResponse));
+
+    return res.status(200).json({
+      success: true,
+      coverLetter:
+        parsed.coverLetter || parsed.CoverLetter || parsed.cover_letter || "",
     });
   } catch (error) {
-    res.status(500).json({
+    console.error("Cover Letter Error:", error);
+
+    return res.status(500).json({
+      success: false,
       message: error.message,
     });
   }
 };
-
-

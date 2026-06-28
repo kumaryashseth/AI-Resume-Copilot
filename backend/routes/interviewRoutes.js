@@ -1,10 +1,9 @@
-import express from 'express';
-import { createInterview, getInterview} from '../controllers/interviewController.js';
-import protect  from '../middleware/authMiddleware.js';
+import express from "express";
+import protect from "../middleware/authMiddleware.js";
+import { createMockInterview } from "../controllers/interviewController.js";
 
 const router = express.Router();
 
-router.post('/', protect, createInterview);
-router.get('/:id', protect, getInterview);
+router.post("/generate", protect, createMockInterview);
 
 export default router;
